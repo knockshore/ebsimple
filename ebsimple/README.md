@@ -71,3 +71,40 @@ using nodemon
 ```sh
 docker run -it --rm --name nodelts -v .:/ebsimple -p 80:80 -p 8080:8080 -p 9000:9000 -e PORT=9000 -e DATABASE_URL=postgres://postgres:password@host.docker.internal:5432/app --add-host=host.docker.internal:host-gateway -w /ebsimple node:lts ./node_modules/.bin/nodemon --watch
 ```
+
+# Install EB CLI
+
+https://github.com/aws/aws-elastic-beanstalk-cli-setup
+
+prepare python docker to create ebcli container
+```
+docker run -it -v /:/host --name ebcli python bash
+```
+
+Use knockshore/ebcli for simplicity
+
+echo 'export PATH="/root/.ebcli-virtual-env/executables:$PATH"' >> ~/.bash_profile && source ~/.bash_profile
+
+# initialize EB
+```sh
+eb init
+```
+- Select region
+- Select NodeJS
+- Select Node 20 running on Amazon Linux 2023
+- Continue with out Code Commit
+
+Set code source
+```
+eb codesource
+```
+Select Codecommit
+
+```sh
+mkdir .ebextensions
+touch .ebextensions/000_envars.config
+```
+```
+git remote add origin git@github.com:knockshore/ebsimple.git
+git push --set-upstream origin master
+```
