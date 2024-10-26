@@ -1,23 +1,67 @@
-var data = {
-  title: 'Hello World!',
+var Data = {
+  correct: null,
   selected: null,
-  question: 'In the Battle of Wolf 359 what prominent Miranda-class ship was destroyed?',
-  choices: [
-    'A) USS Defiant',
-    'B) USS Saratoga',
-    'C) USS Yamaguchi',
-    'D) USS Enterprise'
-  ]
+  current_question: () => {
+    var question = 
+      Data.questions.list.find(
+        i => Data.question_index === i.uuid
+      )
+    // console.log('qn', question)
+    return question;
+  },
+  question_index: null,
+  questions: {
+    list: [],
+    fetch: () => {
+      m.request({
+          method: "GET",
+          url: "/questions",
+      })
+      .then(function(data) {
+        Data.questions.list = data.questions;
+        Data.question_index = data.question_index;
+        // m.redraw(false)
+      })
+    }
+  },
+
+}
+
+var Question = {
+  view: (vnode) => {
+    if (Data.question_index !== null) {
+      return m('.question_wrapper', [
+        m('.question', Data.current_question().question),
+        m(Choice,{index: 'a'}),
+        m(Choice,{index: 'b'}),
+        m(Choice,{index: 'c'}),
+        m(Choice,{index: 'd'}),
+      ])
+    }
+  }
+}
+
+var Correct = {
+  view: (vnode) => {
+    if (Data.correct) {
+      return m('article', 
+        m('.correct', 'Correct option is:'),
+        m('.correct', 
+          Data.current_question()
+            ['option_'+Data.correct.toLowerCase()])
+      )
+    }
+  }
 }
 
 var Choice = {
   click: function(n){
     return function(){
-      data.selected = n
+      Data.selected = n
     }
   },
   classes: function(n){
-    if (data.selected === n){
+    if (Data.selected === n){
       return 'active'
     } else {
       return ''
@@ -27,35 +71,42 @@ var Choice = {
     var n = vnode.attrs.index
     return m('.choice',{ class: Choice.classes(n), onclick: Choice.click(n) },
       m('span.l'),
-      m('span.v',data.choices[n])
+      m('span.v',Data.current_question()['option_'+n])
     )
   }
 }
 var App = {
+  oninit: Data.questions.fetch,
+  next: () => {
+    location.reload()
+  },
   submit: function(){
     m.request({
         method: "PUT",
         url: "/submit",
-        body: {selected: data.selected},
+        body: {
+          selected: Data.selected,
+          uuid: Data.question_index,
+        },
     })
     .then(function(data) {
+      Data.correct = data.correct;
       console.log('data',data)
     })
   },
   view: function() {
     return m('main', [
-      m("h1", data.title),
+      m("h1", 'Study sync'),
       m('article',
-        m('h2','Question:'),
-        m('.question',data.question),
-        m(Choice,{index: 0}),
-        m(Choice,{index: 1}),
-        m(Choice,{index: 2}),
-        m(Choice,{index: 3}),
+        m(Question),
         m('.submit',
           m("button", {onclick: App.submit}, 'Submit')
+        ),
+        m('.submit',
+          m("button", {onclick: App.next}, 'Next')
         )
-      )
+      ),
+      m(Correct)
     ])
   }
 }

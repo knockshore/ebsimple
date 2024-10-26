@@ -6,6 +6,9 @@ In the Follow Along, the video explaining the Dockerfile creation is missing!!!
 
 Be sure to check [EB-Follow-Along-Docker](https://github.com/ExamProCo/TheFreeAWSDeveloperAssociate/tree/master/EB-Follow-Along-Docker) directory to catch up and finish the section.
 
+```sh
+cd /path/to/ebsimple
+```
 
 To run postgres
 `cd db`
@@ -14,14 +17,14 @@ To run postgres
 To install node modules:
 
 ```sh
-docker run -it --rm --name nodelts -v .:/ebsimple -p 80:80 -p 8080:8080 -p 3000:3000 -e PORT
-=3000 -w /ebsimple node:lts npm i
+docker run -it --rm --name nodelts -v .:/ebsimple -p 80:80 -p 8080:8080 -p 9000:9000 -e PORT
+=9000 -w /ebsimple node:lts npm i
 ```
 
 To run the app using docker:
 ```sh
-docker run -it --rm --name nodelts -v .:/ebsimple -p 80:80 -p 8080:8080 -p 3000:3000 -e PORT
-=3000 -w /ebsimple node:lts npm start
+docker run -it --rm --name nodelts -v .:/ebsimple -p 80:80 -p 8080:8080 -p 9000:9000 -e PORT
+=9000 -w /ebsimple node:lts npm start
 ```
 
 To connect to postgres server running in docker and pg port exposed to host
@@ -48,8 +51,7 @@ create tables
 
 open postgres client from docker
 ```sh
-docker run -it --rm -v /repos:/repos --add-host=host.docker.internal:host-
-gateway postgres:13-alpine bash
+docker run -it --rm -v /repos:/repos --add-host=host.docker.internal:host-gateway postgres:13-alpine bash
 ```
 import schema and seed
 ```sh
@@ -59,3 +61,13 @@ psql postgres://postgres:password@host.docker.internal:5432/app < repos/ebsimple
 psql postgres://postgres:password@host.docker.internal:5432/app < repos/ebsimple/db/seed.sql
 ```
 refer seed sql file for data
+
+
+after the postgres is running
+```sh
+docker run -it --rm --name nodelts -v .:/ebsimple -p 80:80 -p 8080:8080 -p 9000:9000 -e PORT=9000 -e DATABASE_URL=postgres://postgres:password@host.docker.internal:5432/app --add-host=host.docker.internal:host-gateway -w /ebsimple node:lts npm start
+```
+using nodemon
+```sh
+docker run -it --rm --name nodelts -v .:/ebsimple -p 80:80 -p 8080:8080 -p 9000:9000 -e PORT=9000 -e DATABASE_URL=postgres://postgres:password@host.docker.internal:5432/app --add-host=host.docker.internal:host-gateway -w /ebsimple node:lts ./node_modules/.bin/nodemon --watch
+```
