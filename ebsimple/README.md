@@ -85,6 +85,12 @@ Use knockshore/ebcli for simplicity
 
 echo 'export PATH="/root/.ebcli-virtual-env/executables:$PATH"' >> ~/.bash_profile && source ~/.bash_profile
 
+# Run EB CLI docker image
+
+```sh
+docker run -it -v /:/host --name ebcli knockshore/ebcli:3.21 bash
+```
+
 # initialize EB
 ```sh
 eb init
@@ -107,4 +113,20 @@ touch .ebextensions/000_envars.config
 ```
 git remote add origin git@github.com:knockshore/ebsimple.git
 git push --set-upstream origin master
+```
+
+# Run eb create
+
+```
+eb create --single
+```
+
+Error autoscaling config
+
+https://github.com/aws/aws-elastic-beanstalk-cli/issues/525
+
+```yaml
+option_settings:
+  aws:autoscaling:launchconfiguration:
+    DisableIMDSv1: true
 ```
