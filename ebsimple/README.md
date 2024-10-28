@@ -137,3 +137,29 @@ option_settings:
 aws iam create-instance-profile --insance-profile <InstanceProfileName>
 aws iam add-role-to-instance-profile --role-name AWSElasticBeanStalkWebTierRole --instance-profile-name <InstanceProfileName>
 ```
+
+For docker
+
+try build the dockerfile
+
+if fresh,
+
+```
+eb init
+eb create --single
+```
+if existing
+```
+eb platform select
+```
+Select Docker as platform
+Select Docker running on 64bit Amazone Linux 2023
+
+Terminate existing if present:
+```
+eb terminate
+```
+Create and deploy
+```
+eb create --single
+```
