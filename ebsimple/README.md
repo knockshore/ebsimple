@@ -130,3 +130,10 @@ option_settings:
   aws:autoscaling:launchconfiguration:
     DisableIMDSv1: true
 ```
+
+### Optional
+
+```sh
+aws iam create-instance-profile --insance-profile <InstanceProfileName>
+aws iam add-role-to-instance-profile --role-name AWSElasticBeanStalkWebTierRole --instance-profile-name <InstanceProfileName>
+```
