@@ -64,7 +64,11 @@ article {
 .choice.active { border: solid 1px #a765ff; }
 .choice.active .l{ background: #a765ff; }
 
-.submit { text-align: center }
+.submit { 
+  text-align: center;
+  display: inline-block;
+  padding: 1rem;
+}
 .submit button {
   background: #a765ff;
   color: #fff;
