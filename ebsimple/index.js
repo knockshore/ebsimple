@@ -22,12 +22,12 @@ app.get('/questions', async (req,res) => {
   try {
 
     const qres = await client.query(`
-      SELECT uuid FROM aws_questions
+      SELECT uuid FROM questions
       WHERE uuid NOT IN (
         SELECT question_uuid FROM answers
         ) LIMIT 1
     `)
-    const result = await client.query('SELECT * FROM aws_questions')  
+    const result = await client.query('SELECT * FROM questions')  
     // console.log(qres.rows)
     res.json({ 
       question_index: qres.rows[0].uuid,
@@ -49,7 +49,7 @@ app.put('/submit', async (req,res) => {
   try {
 
     const result = await client.query(`INSERT INTO answers(question_uuid, choice) VALUES('${uuid}','${selected.toUpperCase()}')`)  
-    const ansres = await client.query(`SELECT * FROM aws_questions WHERE uuid = '${uuid}'`)  
+    const ansres = await client.query(`SELECT * FROM questions WHERE uuid = '${uuid}'`)  
     console.log('insert', result)
     res.json({message:'ok', correct: ansres.rows[0].correct_option})
   } catch(e) {
