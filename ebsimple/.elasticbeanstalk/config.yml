@@ -1,6 +1,6 @@
 branch-defaults:
   default:
-    environment: dockerprod
+    environment: null
 environment-defaults:
   prod:
     branch: null
