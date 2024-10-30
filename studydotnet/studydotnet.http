@@ -1,0 +1,6 @@
+@studydotnet_HostAddress = http://localhost:5087
+
+GET {{studydotnet_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
