@@ -1,4 +1,4 @@
-@studydotnet_HostAddress = http://localhost:5087
+@studydotnet_HostAddress = http://0.0.0.0:8080
 
 GET {{studydotnet_HostAddress}}/weatherforecast/
 Accept: application/json

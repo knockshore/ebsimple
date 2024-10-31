@@ -121,6 +121,3 @@ INSERT INTO questions (question, option_a, option_b, option_c, option_d, correct
  'Data processing', 
  'Data analytics', 
  'B');
-
--- Commit the transaction
-COMMIT;
