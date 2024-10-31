@@ -5,7 +5,7 @@ CREATE TABLE answers (
   uuid uniqueidentifier not null DEFAULT newid(),
   question_uuid uniqueidentifier NOT NULL,
   choice char(1) NOT NULL,
-  created_at DATETIME NOT NULL default SYSDATETIME()
+  created_at DATETIME default SYSDATETIME()
 );
 
 -- Create a table to store AWS questions and answers
